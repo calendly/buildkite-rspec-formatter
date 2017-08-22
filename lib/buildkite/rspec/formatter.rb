@@ -17,7 +17,7 @@ module Buildkite
 
       def example_group_started(notification)
         if (@group_level + 1) <= @max_depth
-          output.puts "--- #{current_indentation} #{notification.group.description}"
+          output.puts "--- #{current_indentation} :rspec: #{notification.group.description}"
           @group_level += 1
         else
           super
@@ -43,7 +43,7 @@ module Buildkite
       end
 
       def dump_summary(summary)
-        output.puts "+++ Summary"
+        output.puts "+++ :rspec: Spec Summary" if summary.examples > 0
         super
       end
 
