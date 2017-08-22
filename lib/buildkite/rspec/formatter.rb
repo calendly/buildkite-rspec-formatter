@@ -16,16 +16,20 @@ module Buildkite
       end
 
       def example_group_started(notification)
-        output.puts "--- #{prefix} #{notification.group.description}" if (@group_level + 1) <= @max_depth
-        super
+        if (@group_level + 1) <= @max_depth
+          output.puts "--- #{current_indentation} #{notification.group.description}"
+          @group_level += 1
+        else
+          super
+        end
       end
 
       def example_started(notification)
-        output.puts "--- #{prefix} #{notification.example.description}" if @break_on_example
+        output.puts "--- #{current_indentation} #{notification.example.description}" if @break_on_example
       end
 
       def example_failed(notification)
-        output.puts "+++ #{prefix} #{notification.example.description}" unless @break_on_example
+        output.puts "+++ #{current_indentation} #{notification.example.description}" unless @break_on_example
         output.print "   " # Make the output line up
         super
         output.puts(notification.colorized_message_lines.join("\n"))
@@ -38,10 +42,6 @@ module Buildkite
         output.puts "--- –––"
       end
 
-      private def prefix
-        return "" if @group_level == 0
-        "#{'  ' * [@group_level - 1, 0].max}⊢–"
-      end
     end
   end
 end
