@@ -42,6 +42,11 @@ module Buildkite
         output.puts "--- –––"
       end
 
+      def dump_summary(summary)
+        output.puts "+++ Summary"
+        super
+      end
+
     end
   end
 end
