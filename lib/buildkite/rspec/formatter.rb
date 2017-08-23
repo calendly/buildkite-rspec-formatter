@@ -43,7 +43,7 @@ module Buildkite
       end
 
       def dump_summary(summary)
-        output.puts "+++ :rspec: Spec Summary" if summary.examples.empty?
+        output.puts "+++ :rspec: Spec Summary" unless summary.examples.empty?
         super
       end
 
