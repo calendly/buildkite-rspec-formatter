@@ -8,7 +8,7 @@ module Buildkite
   module RSpec
     class Formatter < ::RSpec::Core::Formatters::DocumentationFormatter
 
-      ::RSpec::Core::Formatters.register(self, :example_started, :example_group_started, :example_failed)
+      ::RSpec::Core::Formatters.register(self, :example_started, :example_group_started, :example_failed, :start_dump)
       def initialize(output)
         super
         @max_depth = ENV.fetch('BUILDKITE_RSPEC_MAX_DEPTH', 2).to_i
@@ -42,11 +42,9 @@ module Buildkite
         output.puts "--- –––"
       end
 
-      def dump_summary(summary)
-        output.puts "+++ :rspec: Spec Summary" unless summary.examples.empty?
-        super
+      def start_dump(*args)
+        output.puts '+++ :rspec: dump'
       end
-
     end
   end
 end
